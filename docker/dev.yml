@@ -1,0 +1,22 @@
+name: ws-media-triggers
+services:
+  dev-front:
+    restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-dev-front
+    ports:
+      - "3005:3005"
+    volumes:
+      - ../data/:/usr/share/nginx/data:ro
+      - ../front/:/usr/share/nginx/html:ro
+  dev-back:
+    restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-dev-back
+    ports:
+      - "3004:3004"
+    volumes:
+      - ../back/:/home/node/app:rw
+      - ../data/:/home/node/data:rw

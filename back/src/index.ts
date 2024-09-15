@@ -240,9 +240,9 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
                     continue;
                 if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_MOD"] && tags.username.toLowerCase() != name && !tags.mod)
                     continue;
-                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_VIP"] && tags.username.toLowerCase() != name && !tags.mod && !tags.vip)
+                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_VIP"] && tags.username.toLowerCase() != name && !tags.mod && !tags.badges?.vip)
                     continue;
-                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_SUB"] && tags.username.toLowerCase() != name && !tags.mod && !tags.vip && !tags.subscriber)
+                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_SUB"] && tags.username.toLowerCase() != name && !tags.mod && !tags.badges?.vip && !tags.subscriber)
                     continue;
                 if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_START"]){
                     const bIsCaseSensitive = curMedia.option["MOP_TRIGGER_TWITCH_CHAT_START_CASESENS"];

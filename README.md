@@ -3,7 +3,8 @@
 Used to play videos in a browser when certain events trigger them
 
 > [!NOTE]
-> No authorization is being done. It's probably not wise to run this on a public server for others to access.
+> No authorization is being done, and only one user is taken into account.
+> It's probably not wise to run this on a public server for others to access.
 
 ## Preparations
 

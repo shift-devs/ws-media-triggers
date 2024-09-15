@@ -525,7 +525,7 @@ async function main(){
             ws.isAlive = true;
         });
 
-        ws.on('message', (message: string) => {
+        ws.on('message', async (message: string) => {
             console.log(`Received msg from a websocket client -> ${message}`);
             let pMsg = {};
             try {
@@ -599,6 +599,7 @@ async function main(){
                         tmiClient.disconnect()
                     if (slClient)
                         slClient.disconnect();
+                    await saveOption(option);
                     setTimeout(main,0);
             }
         });

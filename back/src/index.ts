@@ -67,6 +67,11 @@ async function loadMediaOption(){
     let optionFiles: string[];
     let outMediaOption: AaronOptionMediaElement[] = [];
 
+    try {await fs.mkdir(`${DATA_ROOT}/media/`)}
+    catch{}
+    try {await fs.mkdir(`${DATA_ROOT}/option/`)}
+    catch{}
+
     try {
         mediaFiles = await fs.readdir(`${DATA_ROOT}/media/`);
         optionFiles = await fs.readdir(`${DATA_ROOT}/option/`);

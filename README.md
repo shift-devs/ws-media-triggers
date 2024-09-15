@@ -23,7 +23,8 @@ Used to play videos in a browser when certain events trigger them
 ## Using it
 - You can access the settings page at: http://localhost:3005
 - You can access the WebSocket backend on port `3004`
-⚡ Triggers the Media To Play
-🛑 Triggers the Media To Stop
-🔗 Will Put a Copy of The Widget Link Into Your Clipboard
-🔧 Will Allow You To Change What Triggers The Media
+
+- ⚡ Triggers the Media To Play
+- 🛑 Triggers the Media To Stop
+- 🔗 Will Put a Copy of The Widget Link Into Your Clipboard
+- 🔧 Will Allow You To Change What Triggers The Media

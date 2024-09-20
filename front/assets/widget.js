@@ -34,8 +34,6 @@ const wsShenanigans = () => {
         const mediaLink = thisURL.searchParams.get("media");
         switch (shrimp.op){
             case WS_OP.TRIGGER_MEDIA:
-                console.log('prelog');
-                console.log(shrimp.name, mediaLink);
                 if (shrimp.name == mediaLink){
                     mainVideo.style.display = "initial";
                     mainVideo.currentTime = 0;
@@ -43,8 +41,6 @@ const wsShenanigans = () => {
                 }
                 break
             case WS_OP.STOP_MEDIA:
-                console.log('prelog');
-                console.log(shrimp.name, mediaLink);
                 if (shrimp.name == mediaLink){
                     mainVideo.style.display = "none";
                     mainVideo.pause();

@@ -72,7 +72,7 @@ function saveMedia(i){
     for (let key in gLocalOption.media[i].option){
         const theElement = document.getElementById(`${key}@${i}`);
         if (theElement === null){
-            console.log("Unable or unwilling to save the media settings laid before him...");
+            console.warn("Unable or unwilling to save the media settings laid before him...");
             alert('Error while saving media settings!');
             return;
         }
@@ -95,7 +95,7 @@ function saveGlobal(){
     for (let key in gLocalOption.global){
         const theElement = document.getElementById(key);
         if (theElement === null){
-            console.log("Unable or unwilling to save the global settings laid before him...");
+            console.warn("Unable or unwilling to save the global settings laid before him...");
             alert('Error while saving global settings!');
             return;
         }
@@ -120,7 +120,6 @@ function renderOptions(bGlobal, inM){
         stack.push(optionBuilderPart[i]);
         subLevel = 0;
         while (stack.length != 0){
-            // okay
             renderBuffer += bGlobal?DIRFLAIR_ELEMENT:(lastMedia?DIRFLAIR_TAILSTR:DIRFLAIR_SUBPASS)+DIRFLAIR_SUBPASS.repeat(subLevel)+DIRFLAIR_ELEMENT;
             const curOption = stack[0];
             const curOptionValue = bGlobal ? gLocalOption.global[curOption.op] : gLocalOption.media[inM].option[curOption.op];
@@ -168,7 +167,8 @@ function render(){
     renderBuffer += `Your Media:\n`;
     for (var i = 0; i < gLocalOption.media.length; i++){
         let shortMediaName = gLocalOption.media[i].name;
-        shortMediaName = shortMediaName.replaceAll(/[^ -~]/g,"?"); // todo escape out html bad things in filename
+        shortMediaName = shortMediaName.replaceAll(/[^ -~]/g,"?");
+        shortMediaName = shortMediaName.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("\"","&quot;").replaceAll("'","&#39;");
         if (shortMediaName.length >= WHITESPACE - DIRFLAIR_ELEMENT.length){
             shortMediaName = `${shortMediaName.slice(0, WHITESPACE - DIRFLAIR_ELEMENT.length - 3)}...`;
         }
@@ -183,7 +183,7 @@ function render(){
             renderBuffer += renderOptions(false, i);
         }
     }
-    renderBuffer += `\n\nTip: Add media by copying it into the data/media folder.\nThen... just click this button -> <button onclick="reloadMedia()">Restart Backend</button>\n\nREMEMBER: Changes to any options won't actually be put into effect\nuntil you click the Save button!`;
+    renderBuffer += `\n\nTip: Add media by copying it into the data/media folder.\nThen... just click this button -&gt; <button onclick="reloadMedia()">Restart Backend</button>\n\nREMEMBER: Changes to any options won't actually be put into effect\nuntil you click the Save button!`;
 
     gMainPre.innerHTML = renderBuffer;
 }
@@ -192,7 +192,7 @@ function mainFrontend(){
     gMainPre = document.getElementById("mainPre");
     gMainPre.innerHTML = LOADINGTEXT;
     
-    gWS = new WebSocket(WS_HOST); // erm.. this should be defined in like... .env !!
+    gWS = new WebSocket(WS_HOST);
 
     gWS.addEventListener("open", () => {
         console.log("Connected to the WebSocket server.");

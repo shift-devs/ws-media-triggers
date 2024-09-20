@@ -240,8 +240,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         if (tags.username) {
             for (var i = 0; i < option.media.length; i++){
                 const curMedia = option.media[i];
-                if (!getOption(curMedia.option,"MOP_ENABLE"))
-                    continue;
                 if (!getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT"))
                     continue;
                 if (getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_BROADCASTER") && tags.username.toLowerCase() != name)
@@ -280,8 +278,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - ${username} is gifting ${numbOfSubs} tier ${tier} subs!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!getOption(curMedia.option,"MOP_ENABLE"))
-                continue;
             if (!getOption(curMedia.option,"MOP_TRIGGER_GIFTBOMB"))
                 continue;
             if (getOption(curMedia.option,"MOP_TRIGGER_GIFTBOMB_NOANON") && isAnon(username))
@@ -304,8 +300,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - subgift from ${username} to ${recipient} of tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!getOption(curMedia.option,"MOP_ENABLE"))
-                continue;
             if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             if (getOption(curMedia.option,"MOP_TRIGGER_ONESUB_NOANON") && isAnon(username))
@@ -321,8 +315,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - anongiftpaidupgrade from ${_username} to tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!getOption(curMedia.option,"MOP_ENABLE"))
-                continue;
             if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
@@ -336,8 +328,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - giftpaidupgrade from ${_username} to tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!getOption(curMedia.option,"MOP_ENABLE"))
-                continue;
             if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
@@ -351,8 +341,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - ${_username} has resubscribed with tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!getOption(curMedia.option,"MOP_ENABLE"))
-                continue;
             if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
@@ -366,8 +354,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - ${_username} has subscribed with tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!getOption(curMedia.option,"MOP_ENABLE"))
-                continue;
             if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
@@ -381,8 +367,6 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - cheer of ${bits} bits from ${userstate["display-name"]}`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!getOption(curMedia.option,"MOP_ENABLE"))
-                continue;
             if (!getOption(curMedia.option,"MOP_TRIGGER_BITS"))
                 continue;
             if (getOption(curMedia.option,"MOP_TRIGGER_BITS_MIN") > bits)
@@ -435,8 +419,6 @@ function slLogin(option: AaronOption, wss: WebSocketServer){
                 console.log(`STREAMLABS - $${money}!`);
                 for (var i = 0; i < option.media.length; i++){
                     const curMedia = option.media[i];
-                    if (!getOption(curMedia.option,"MOP_ENABLE"))
-                        continue;
                     if (!getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_DONO"))
                         continue;
                     if (getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_DONO_MIN") > money)
@@ -457,8 +439,6 @@ function slLogin(option: AaronOption, wss: WebSocketServer){
                 console.log(`STREAMLABS - $${money}!`);
                 for (var i = 0; i < option.media.length; i++){
                     const curMedia = option.media[i];
-                    if (!getOption(curMedia.option,"MOP_ENABLE"))
-                        continue;
                     if (!getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_MERCH"))
                         continue;
                     if (getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_MERCH_MIN") > money)

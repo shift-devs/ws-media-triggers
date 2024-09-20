@@ -22,12 +22,6 @@ export const OPTION_BUILDER = {
     ],
     media: [
         {
-            op: "MOP_ENABLE",
-            text: "Enabled",
-            type: OPTION_TYPES.CHECKBOX,
-            default: false
-        },
-        {
             op: "MOP_TRIGGER_ONESUB",
             text: "Trigger on Single Sub / Resub / Giftsub",
             type: OPTION_TYPES.CHECKBOX,

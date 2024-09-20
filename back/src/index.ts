@@ -197,8 +197,16 @@ async function loadOption(){
     return combinedOption;
 }
 
+function getOption(option: object, optionName: string){
+    if (!option.hasOwnProperty(optionName)){
+        console.warn(`WARNING! OPTION OBJECT HAS NO OPTION: "${optionName}" - RETURNING FALSE!`);
+        return false;
+    }
+    return option[optionName];
+}
+
 function tmiLogin(option: AaronOption, wss: WebSocketServer){
-    const name = option.global["GOP_TWITCH_USERNAME"];
+    const name = getOption(option.global,"GOP_TWITCH_USERNAME");
 
     if (name == "") // make sure its actually set before logging in tmi
         return 0;
@@ -232,21 +240,21 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         if (tags.username) {
             for (var i = 0; i < option.media.length; i++){
                 const curMedia = option.media[i];
-                if (!curMedia.option["MOP_ENABLE"])
+                if (!getOption(curMedia.option,"MOP_ENABLE"))
                     continue;
-                if (!curMedia.option["MOP_TRIGGER_TWITCH_CHAT"])
+                if (!getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT"))
                     continue;
-                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_BROADCASTER"] && tags.username.toLowerCase() != name)
+                if (getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_BROADCASTER") && tags.username.toLowerCase() != name)
                     continue;
-                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_MOD"] && tags.username.toLowerCase() != name && !tags.mod)
+                if (getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_MOD") && tags.username.toLowerCase() != name && !tags.mod)
                     continue;
-                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_VIP"] && tags.username.toLowerCase() != name && !tags.mod && !tags.badges?.vip)
+                if (getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_VIP") && tags.username.toLowerCase() != name && !tags.mod && !tags.badges?.vip)
                     continue;
-                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_SUB"] && tags.username.toLowerCase() != name && !tags.mod && !tags.badges?.vip && !tags.subscriber)
+                if (getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_SUB") && tags.username.toLowerCase() != name && !tags.mod && !tags.badges?.vip && !tags.subscriber)
                     continue;
-                if (curMedia.option["MOP_TRIGGER_TWITCH_CHAT_START"]){
-                    const bIsCaseSensitive = curMedia.option["MOP_TRIGGER_TWITCH_CHAT_START_CASESENS"];
-                    if (!(bIsCaseSensitive ? message : message.toLowerCase()).startsWith(bIsCaseSensitive ? curMedia.option["MOP_TRIGGER_TWITCH_CHAT_START_TEXT"] : curMedia.option["MOP_TRIGGER_TWITCH_CHAT_START_TEXT"].toLowerCase()))
+                if (getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_START")){
+                    const bIsCaseSensitive = getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_START_CASESENS");
+                    if (!(bIsCaseSensitive ? message : message.toLowerCase()).startsWith(bIsCaseSensitive ? getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_START_TEXT") : getOption(curMedia.option,"MOP_TRIGGER_TWITCH_CHAT_START_TEXT").toLowerCase()))
                         continue;
                 }
                 wss.clients.forEach((cli)=>{
@@ -272,15 +280,15 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - ${username} is gifting ${numbOfSubs} tier ${tier} subs!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!curMedia.option["MOP_ENABLE"])
+            if (!getOption(curMedia.option,"MOP_ENABLE"))
                 continue;
-            if (!curMedia.option["MOP_TRIGGER_GIFTBOMB"])
+            if (!getOption(curMedia.option,"MOP_TRIGGER_GIFTBOMB"))
                 continue;
-            if (curMedia.option["MOP_TRIGGER_GIFTBOMB_NOANON"] && isAnon(username))
+            if (getOption(curMedia.option,"MOP_TRIGGER_GIFTBOMB_NOANON") && isAnon(username))
                 continue;
-            if (curMedia.option["MOP_TRIGGER_GIFTBOMB_MIN"] > numbOfSubs)
+            if (getOption(curMedia.option,"MOP_TRIGGER_GIFTBOMB_MIN") > numbOfSubs)
                 continue;
-            if (curMedia.option["MOP_TRIGGER_GIFTBOMB_MAX"] != 0 && curMedia.option["MOP_TRIGGER_GIFTBOMB_MAX"] < numbOfSubs)
+            if (getOption(curMedia.option,"MOP_TRIGGER_GIFTBOMB_MAX") != 0 && getOption(curMedia.option,"MOP_TRIGGER_GIFTBOMB_MAX") < numbOfSubs)
                 continue;
             wss.clients.forEach((cli)=>{
                 cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -296,11 +304,11 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - subgift from ${username} to ${recipient} of tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!curMedia.option["MOP_ENABLE"])
+            if (!getOption(curMedia.option,"MOP_ENABLE"))
                 continue;
-            if (!curMedia.option["MOP_TRIGGER_ONESUB"])
+            if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
-            if (curMedia.option["MOP_TRIGGER_ONESUB_NOANON"] && isAnon(username))
+            if (getOption(curMedia.option,"MOP_TRIGGER_ONESUB_NOANON") && isAnon(username))
                 continue;
             wss.clients.forEach((cli)=>{
                 cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -313,9 +321,9 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - anongiftpaidupgrade from ${_username} to tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!curMedia.option["MOP_ENABLE"])
+            if (!getOption(curMedia.option,"MOP_ENABLE"))
                 continue;
-            if (!curMedia.option["MOP_TRIGGER_ONESUB"])
+            if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
                 cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -328,9 +336,9 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - giftpaidupgrade from ${_username} to tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!curMedia.option["MOP_ENABLE"])
+            if (!getOption(curMedia.option,"MOP_ENABLE"))
                 continue;
-            if (!curMedia.option["MOP_TRIGGER_ONESUB"])
+            if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
                 cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -343,9 +351,9 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - ${_username} has resubscribed with tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!curMedia.option["MOP_ENABLE"])
+            if (!getOption(curMedia.option,"MOP_ENABLE"))
                 continue;
-            if (!curMedia.option["MOP_TRIGGER_ONESUB"])
+            if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
                 cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -358,9 +366,9 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - ${_username} has subscribed with tier ${tier}!`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!curMedia.option["MOP_ENABLE"])
+            if (!getOption(curMedia.option,"MOP_ENABLE"))
                 continue;
-            if (!curMedia.option["MOP_TRIGGER_ONESUB"])
+            if (!getOption(curMedia.option,"MOP_TRIGGER_ONESUB"))
                 continue;
             wss.clients.forEach((cli)=>{
                 cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -373,13 +381,13 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
         console.log(`(${name}) TMI - cheer of ${bits} bits from ${userstate["display-name"]}`);
         for (var i = 0; i < option.media.length; i++){
             const curMedia = option.media[i];
-            if (!curMedia.option["MOP_ENABLE"])
+            if (!getOption(curMedia.option,"MOP_ENABLE"))
                 continue;
-            if (!curMedia.option["MOP_TRIGGER_BITS"])
+            if (!getOption(curMedia.option,"MOP_TRIGGER_BITS"))
                 continue;
-            if (curMedia.option["MOP_TRIGGER_BITS_MIN"] > bits)
+            if (getOption(curMedia.option,"MOP_TRIGGER_BITS_MIN") > bits)
                 continue;
-            if (curMedia.option["MOP_TRIGGER_BITS_MAX"] != 0 && curMedia.option["MOP_TRIGGER_BITS_MAX"] < bits)
+            if (getOption(curMedia.option,"MOP_TRIGGER_BITS_MAX") != 0 && getOption(curMedia.option,"MOP_TRIGGER_BITS_MAX") < bits)
                 continue;
             wss.clients.forEach((cli)=>{
                 cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -391,15 +399,15 @@ function tmiLogin(option: AaronOption, wss: WebSocketServer){
 }
 
 function slLogin(option: AaronOption, wss: WebSocketServer){
-    const slToken = option.global["GOP_STREAMLABS_TOKEN"];
-    const username = option.global["GOP_TWITCH_USERNAME"];
+    const slToken = getOption(option.global,"GOP_STREAMLABS_TOKEN");
+    const username = getOption(option.global,"GOP_TWITCH_USERNAME");
     if (slToken == "" || username == "")
         return 0;
 
     let merchInterval: NodeJS.Timeout | number = 0;
     let merchValues = {};
 
-    const socket = io(`https://sockets.streamlabs.com?token=${option.global["GOP_STREAMLABS_TOKEN"]}`, {
+    const socket = io(`https://sockets.streamlabs.com?token=${slToken}`, {
         transports: ["websocket"],
     });
 
@@ -427,13 +435,13 @@ function slLogin(option: AaronOption, wss: WebSocketServer){
                 console.log(`STREAMLABS - $${money}!`);
                 for (var i = 0; i < option.media.length; i++){
                     const curMedia = option.media[i];
-                    if (!curMedia.option["MOP_ENABLE"])
+                    if (!getOption(curMedia.option,"MOP_ENABLE"))
                         continue;
-                    if (!curMedia.option["MOP_TRIGGER_STREAMLABS_DONO"])
+                    if (!getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_DONO"))
                         continue;
-                    if (curMedia.option["MOP_TRIGGER_STREAMLABS_DONO_MIN"] > money)
+                    if (getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_DONO_MIN") > money)
                         continue;
-                    if (curMedia.option["MOP_TRIGGER_STREAMLABS_DONO_MAX"] != 0 && curMedia.option["MOP_TRIGGER_STREAMLABS_DONO_MAX"] < money)
+                    if (getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_DONO_MAX") != 0 && getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_DONO_MAX") < money)
                         continue;
                     wss.clients.forEach((cli)=>{
                         cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -449,13 +457,13 @@ function slLogin(option: AaronOption, wss: WebSocketServer){
                 console.log(`STREAMLABS - $${money}!`);
                 for (var i = 0; i < option.media.length; i++){
                     const curMedia = option.media[i];
-                    if (!curMedia.option["MOP_ENABLE"])
+                    if (!getOption(curMedia.option,"MOP_ENABLE"))
                         continue;
-                    if (!curMedia.option["MOP_TRIGGER_STREAMLABS_MERCH"])
+                    if (!getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_MERCH"))
                         continue;
-                    if (curMedia.option["MOP_TRIGGER_STREAMLABS_MERCH_MIN"] > money)
+                    if (getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_MERCH_MIN") > money)
                         continue;
-                    if (curMedia.option["MOP_TRIGGER_STREAMLABS_MERCH_MAX"] != 0 && curMedia.option["MOP_TRIGGER_STREAMLABS_MERCH_MAX"] < money)
+                    if (getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_MERCH_MAX") != 0 && getOption(curMedia.option,"MOP_TRIGGER_STREAMLABS_MERCH_MAX") < money)
                         continue;
                     wss.clients.forEach((cli)=>{
                         cli.send(JSON.stringify({op: WS_OP.TRIGGER_MEDIA, name: curMedia.name}));
@@ -502,7 +510,7 @@ async function main(){
 
     let tmiClient: any = 0;
     let slClient: any = 0;
-    let tempSLToken = option.global["GOP_STREAMLABS_TOKEN"];
+    let lastSLToken = getOption(option.global, "GOP_STREAMLABS_TOKEN");
 
     const wss = new WebSocketServer({ port: WS_PORT });
     tmiClient = tmiLogin(option, wss);
@@ -571,7 +579,7 @@ async function main(){
                     }
                     else {
                         const tmiChannels = tmiClient.getChannels();
-                        if (tmiChannels.length != 1 || tmiChannels[0].slice(1) != option.global["GOP_TWITCH_USERNAME"]){
+                        if (tmiChannels.length != 1 || tmiChannels[0].slice(1) != getOption(option.global,"GOP_TWITCH_USERNAME")){
                             tmiClient.disconnect();
                             tmiClient = tmiLogin(option, wss);
                         }
@@ -581,9 +589,10 @@ async function main(){
                         slClient = slLogin(option, wss);
                     }
                     else {
-                        if (option.global["GOP_STREAMLABS_TOKEN"] != tempSLToken){
+                        let curSLToken = getOption(option.global,"GOP_STREAMLABS_TOKEN");
+                        if (curSLToken != lastSLToken){
                             slClient.disconnect();
-                            tempSLToken = option.global["GOP_STREAMLABS_TOKEN"];
+                            lastSLToken = curSLToken;
                             slClient = slLogin(option, wss);
                         }
                     }

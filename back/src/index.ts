@@ -436,6 +436,22 @@ function slLogin(option: AaronOption, wss: WebSocketServer){
                     return;
                 }
                 money = merchValues[e.message[0].product];
+                if (!money){
+                    console.log(`WARNING! STREAMLABS PRODUCT "${e.message[0].product}" IS NOT IN MERCHVALUES!! Trying a fuzzier search...!`);
+                    const mvEntries = Object.entries(merchValues);
+                    const lowercaseProduct = e.message[0].product.toLowerCase();
+                    for (var i = 0; i < mvEntries.length; i++){
+                        if (mvEntries[i][0].toLowerCase().includes(lowercaseProduct)){
+                            console.log(`Found "${mvEntries[i][0]}" as a close enough match!`);
+                            money = mvEntries[i][1] as any;
+                            break;
+                        }
+                    }
+                }
+                if (!money){
+                    console.log(`Definitely couldn't find a valid matching product!!! Tell Aaron! :^(`);
+                    return;
+                }
                 console.log(`STREAMLABS - $${money}!`);
                 for (var i = 0; i < option.media.length; i++){
                     const curMedia = option.media[i];

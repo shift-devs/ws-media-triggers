@@ -431,10 +431,6 @@ function slLogin(option: AaronOption, wss: WebSocketServer){
                 }
                 break;
             case "merch":
-                if (!merchValues[e.message[0].product]){
-                    console.warn(`WARNING! STREAMLABS PRODUCT "${e.message[0].product}" IS NOT IN MERCHVALUES!!`);
-                    return;
-                }
                 money = merchValues[e.message[0].product];
                 if (!money){
                     console.log(`WARNING! STREAMLABS PRODUCT "${e.message[0].product}" IS NOT IN MERCHVALUES!! Trying a fuzzier search...!`);

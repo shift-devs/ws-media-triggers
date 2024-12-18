@@ -16,7 +16,8 @@ const OPTION_TYPES = {
     NULL: 0,
     CHECKBOX: 1,
     NUMBER: 2,
-    TEXT: 3
+    TEXT: 3,
+    PASS: 4
 }
 
 let gLocalOptionBuilder = {}
@@ -132,6 +133,8 @@ function renderOptions(bGlobal, inM){
                 case OPTION_TYPES.TEXT:
                     renderBuffer += `${curOption.text}: <input type="text" id="${idName}" value="${curOptionValue}">`;
                     break;
+                case OPTION_TYPES.PASS:
+                    renderBuffer += `${curOption.text}: <input type="password" id="${idName}" value="${curOptionValue}">`;
                 case OPTION_TYPES.NUMBER:
                     renderBuffer += `${curOption.text}: <input type="number" id="${idName}" min="${curOption.min}" max="${curOption.max}" value="${curOptionValue}">`;
                     break;

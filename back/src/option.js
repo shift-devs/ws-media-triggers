@@ -2,7 +2,8 @@ export const OPTION_TYPES = {
     NULL: 0,
     CHECKBOX: 1,
     NUMBER: 2,
-    TEXT: 3
+    TEXT: 3,
+    PASS: 4
 }
 
 export const OPTION_BUILDER = {
@@ -16,7 +17,7 @@ export const OPTION_BUILDER = {
         {
             op: "GOP_STREAMLABS_TOKEN",
             text: "Streamlabs Socket API Token <a href='https://streamlabs.com/dashboard#/settings/api-settings'>(Here)</a>",
-            type: OPTION_TYPES.TEXT,
+            type: OPTION_TYPES.PASS,
             default: ""
         }
     ],

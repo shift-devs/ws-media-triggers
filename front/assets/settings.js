@@ -135,6 +135,7 @@ function renderOptions(bGlobal, inM){
                     break;
                 case OPTION_TYPES.PASS:
                     renderBuffer += `${curOption.text}: <input type="password" id="${idName}" value="${curOptionValue}">`;
+                    break;
                 case OPTION_TYPES.NUMBER:
                     renderBuffer += `${curOption.text}: <input type="number" id="${idName}" min="${curOption.min}" max="${curOption.max}" value="${curOptionValue}">`;
                     break;

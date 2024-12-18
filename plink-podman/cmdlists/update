@@ -1,0 +1,3 @@
+systemctl --user stop wsmt
+cd /home/arch/ws-media-triggers/
+git pull

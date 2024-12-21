@@ -489,7 +489,11 @@ function slInstallMerch(username, merchValues){
             });
             merchValues = Object.assign({}, newMerchValues);
             console.log(`Done Getting Streamlabs Merch!`);
-        });
+        }).catch(()=>{
+            console.log(`Could not get new streamlabs merch at this time! Try again later!`);
+        })
+    }).catch(()=>{
+        console.log(`Could not get new streamlabs merch at this time! Try again later!`);
     });
 }
 
